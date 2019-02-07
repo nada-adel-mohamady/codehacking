@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use Auth;
 use App\Photo;
+use App\Category;
 class AdminPostsController extends Controller
 {
     /**
@@ -28,7 +29,8 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-         return view('admin.posts.create');
+        $cateogries=Category::pluck('name','id')->all();
+         return view('admin.posts.create',compact('cateogries'));
     }
 
     /**
