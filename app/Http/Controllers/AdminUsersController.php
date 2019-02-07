@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Role;
 use App\Photo;
@@ -124,6 +125,8 @@ $input=$request->except('password');
 
 
         }
+             $input['password']=bcrypt($request->password);
+
         $user->update($input);
         return redirect('/admin/users');
     }
@@ -137,5 +140,12 @@ $input=$request->except('password');
     public function destroy($id)
     {
         //
+
+      $user=User::findOrFail($id);
+      unlink(public_path().$user->photo->file);
+      $user->delete();
+      Session::flash('deleted_user','The user has been deleted successfully');
+     return  redirect('/admin/users');
+
     }
 }

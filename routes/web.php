@@ -29,7 +29,6 @@ Route::get('user/role',function(){
 
 });
 
-Route::resource('admin/users','AdminUsersController');
 
 Route::get('/admin',function(){
 
@@ -37,3 +36,16 @@ Route::get('/admin',function(){
 	return view('admin.index');
 	//return view('layouts.admin');
 });
+
+
+Route::group(['middleware'=>'admin'],function(){
+
+
+Route::resource('admin/users','AdminUsersController');
+Route::resource('admin/posts','AdminPostsController');
+Route::get('auth/logout', 'Auth\AuthController@logout');
+	
+});
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+
